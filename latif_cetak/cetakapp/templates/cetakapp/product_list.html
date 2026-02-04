@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +41,48 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Filter Buttons Styling */
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .btn-all {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-bisa {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .btn-tidak {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -67,7 +110,10 @@
         }
 
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            display: inline-block;
+            padding: 0.4rem 1.25rem;
+            min-width: 120px;
+            text-align: center;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 600;
@@ -86,21 +132,37 @@
         .price {
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
+            min-width: 140px;
+            text-align: right;
+        }
+
+        .category-col {
+            min-width: 200px;
         }
     </style>
 </head>
+
 <body>
     <h1>Daftar Produk</h1>
-    
+
+    <div class="filter-group">
+        <a href="?status=all" class="filter-btn btn-all {% if current_status == 'all' %}active{% endif %}">Semua
+            Data</a>
+        <a href="?status=bisa" class="filter-btn btn-bisa {% if current_status == 'bisa' %}active{% endif %}">Bisa
+            Dijual</a>
+        <a href="?status=tidak" class="filter-btn btn-tidak {% if current_status == 'tidak' %}active{% endif %}">Tidak
+            Bisa Dijual</a>
+    </div>
+
     <div class="container">
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nama Produk</th>
-                    <th>Kategori</th>
-                    <th>Harga</th>
-                    <th>Status</th>
+                    <th class="category-col">Kategori</th>
+                    <th class="price">Harga</th>
+                    <th style="text-align: center;">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,10 +170,11 @@
                 <tr>
                     <td>{{ product.id_produk }}</td>
                     <td>{{ product.nama_produk }}</td>
-                    <td>{{ product.kategori.nama_kategori }}</td>
+                    <td class="category-col">{{ product.kategori.nama_kategori }}</td>
                     <td class="price">Rp {{ product.harga|floatformat:0 }}</td>
-                    <td>
-                        <span class="status-badge {% if product.status.nama_status == 'bisa dijual' %}status-bisa{% else %}status-tidak{% endif %}">
+                    <td style="text-align: center;">
+                        <span
+                            class="status-badge {% if product.status.nama_status == 'bisa dijual' %}status-bisa{% else %}status-tidak{% endif %}">
                             {{ product.status.nama_status }}
                         </span>
                     </td>
@@ -125,4 +188,5 @@
         </table>
     </div>
 </body>
+
 </html>
