@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from .forms import ProductForm
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Produk
@@ -39,3 +40,15 @@ def delete_product(request, product_id):
             {"success": False, "message": f"Gagal menghapus produk: {str(e)}"},
             status=500,
         )
+
+
+def add_product(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+    else:
+        form = ProductForm()
+
+    return render(request, "cetakapp/product_form.html", {"form": form})
