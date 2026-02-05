@@ -1,49 +1,178 @@
-CARA INSTALL PERTAMA KALI
+# Cetak Cepat – Django Project
 
-1 clone repo. menggunakna django 4.2
-2 bikin DB latif_cetak pada Xampp/phpmyadmin
-3 python3 manage.py migrate
-4 cd latif_cetak
-5 pipenv install pymsql
-6 python3 manage.py fetch_api (untuk insert auto dari API ke database MySql)
+Project ini adalah aplikasi **Django 4.2** untuk manajemen produk (list, filter, tambah, edit, hapus) dengan data awal yang dapat di-*fetch* otomatis dari API dan disimpan ke database **MySQL**.
 
-struktur folder:
-1 kode untuk insert data dari API 
-cetakcepat/latif_cetak/cetakapp/management/commands/fetch_api.py
+---
 
+## 🛠️ Tech Stack
 
-2 database untuk migrate
-/Users/ryancahyafirdaus/Documents/LOKER/FASPRINT/cetak_cepat/cetakcepat/latif_cetak/cetakapp/models.py
+* Python 3
+* Django 4.2
+* MySQL (XAMPP / phpMyAdmin)
+* Pipenv
 
-3 template all data: product_list.html
-4 template delete modal
-5 template add & edit: product_form.html
+---
 
-alur
-1 filter status
-        product_list.html menampilkan tombol filter status & list product.
-        list product dan logika filter status ada di views.py
-        product yang ditampilkan sesuai filter dari fungsi product_list
-2 hapus
-        POST id & nama product_list.html pada showDeleteModal
-        _delete_modal.html untuk html modal nya
-        modal.js menyimpan ID produk dengan Global variable. 
-        kemudian klik hapus, akan trigger listener fetch Hapus.
-        di views.py ada handling POST delete.
-3 add product
-        add_product views.py bagian else
-        masuk halaman from produk.html
-        kirim post. masuk lagi ke add_product views.py
-        validasi form. syarat nya ada di models.py.
-        jika valid, simpan ke DB.
-4 edit product
-        dari list html klik edit
-        kemudian urls.py akan mengarahkna ke views.py edit_product bagian else
-        cari id produt, masuk ke halaman product_form.html
-        klik simpan, masuk ke edit_product views.py
-        cek validasi di models.py
-        jika valid, update ke DB.
+## 🚀 Cara Install Pertama Kali
 
+1. **Clone repository**
 
+   ```bash
+   git clone https://github.com/mlatifr/cetakcepat
+   cd cetakcepat
+   ```
 
-        
+2. **Buat database**
+
+   * Jalankan XAMPP
+   * Buka phpMyAdmin
+   * Buat database dengan nama:
+
+     ```text
+     latif_cetak
+     ```
+
+3. **Aktifkan environment & install dependency**
+
+   ```bash
+   pipenv install
+   pipenv shell
+   pipenv install pymysql
+   ```
+
+4. **Migrasi database**
+
+   ```bash
+   cd latif_cetak
+   python3 manage.py migrate
+   ```
+
+5. **Fetch data dari API (insert otomatis ke MySQL)**
+
+   ```bash
+   python3 manage.py fetch_api
+   ```
+
+6. **Jalankan server**
+
+   ```bash
+   python3 manage.py runserver
+   ```
+
+---
+
+## 📂 Struktur Folder Penting
+
+### 1️⃣ Fetch & Insert Data dari API
+
+Digunakan untuk mengambil data dari API dan menyimpannya ke database.
+
+```text
+cetakcepat/
+└── latif_cetak/
+    └── cetakapp/
+        └── management/
+            └── commands/
+                └── fetch_api.py
+```
+
+### 2️⃣ Database & Model
+
+Digunakan untuk definisi tabel dan validasi data.
+
+```text
+cetakapp/models.py
+```
+
+### 3️⃣ Template
+
+* **List & Filter Data**
+
+  ```text
+  product_list.html
+  ```
+* **Modal Delete**
+
+  ```text
+  _delete_modal.html
+  ```
+* **Form Add & Edit Product**
+
+  ```text
+  product_form.html
+  ```
+
+---
+
+## 🔄 Alur Aplikasi
+
+### 1️⃣ Filter Status Produk
+
+* `product_list.html`
+
+  * Menampilkan tombol filter status
+  * Menampilkan list produk
+* Logika filter ada di `views.py`
+* Data yang ditampilkan menyesuaikan filter dari fungsi `product_list`
+
+---
+
+### 2️⃣ Hapus Produk
+
+* Dari `product_list.html`
+
+  * Kirim **POST** berupa `id` dan `nama produk`
+  * Trigger fungsi `showDeleteModal`
+* `_delete_modal.html`
+
+  * Berisi tampilan modal konfirmasi hapus
+* `modal.js`
+
+  * Menyimpan **ID produk** dalam global variable
+  * Tombol *Hapus* akan memicu request `fetch` delete
+* `views.py`
+
+  * Menangani request **POST delete** dan menghapus data dari database
+
+---
+
+### 3️⃣ Tambah Produk
+
+* Masuk ke `add_product` di `views.py` (branch `else`)
+* Redirect ke halaman:
+
+  ```text
+  product_form.html
+  ```
+* Submit form (POST)
+* Kembali ke `add_product` di `views.py`
+* Validasi data berdasarkan aturan di `models.py`
+* Jika valid → data disimpan ke database
+
+---
+
+### 4️⃣ Edit Produk
+
+* Dari `product_list.html` klik **Edit**
+* `urls.py` mengarahkan ke `edit_product` di `views.py`
+* Ambil data produk berdasarkan `id`
+* Tampilkan di:
+
+  ```text
+  product_form.html
+  ```
+* Klik **Simpan**
+* Masuk kembali ke `edit_product` di `views.py`
+* Validasi data di `models.py`
+* Jika valid → data di-*update* ke database
+
+---
+
+## ✅ Catatan
+
+* Pastikan konfigurasi database di `settings.py` sesuai dengan MySQL lokal
+* Jalankan `fetch_api` hanya jika ingin mengisi data awal dari API
+
+---
+
+📌 **Author**: Aldi
